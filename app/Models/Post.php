@@ -24,4 +24,17 @@ class Post extends Model
     {
         return $this->hasMany('App\Models\Comment');
     }
+
+    public function scopeFilter($query,array $filters)
+    {
+        if($filters['excerpt']??false){
+            $query->where('excerpt','like','%'.request('excerpt').'%');
+        }
+
+        if($filters['search']??false){
+            $query->where('title','like','%'.request('search').'%')
+                  ->orWhere('body','like','%'.request('search').'5')
+                  ->orWhere('excerpt','like','%'.request('search').'%');
+        }
+    }
 }

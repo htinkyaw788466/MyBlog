@@ -18,7 +18,8 @@ class ClientBlogController extends Controller
     {
         $categories=Category::with('posts')->orderBy('name','asc')->get();
 
-        $posts=Post::latest()->simplePaginate($this->limit);
+        $posts=Post::latest()->filter(request(['excerpt','search']))->
+              simplePaginate($this->limit);
         return view('client.blog.index',compact('posts','categories'));
     }
 
